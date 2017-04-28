@@ -3,6 +3,8 @@
     "target": "es5",
     "sourceMap": true,
     "types": ["mocha", "sinon-chai", "requirejs"],
+    "jsx": "react",
+    "module": "commonjs",
     "experimentalDecorators": true
   },
   "compileOnSave": false,

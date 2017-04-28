@@ -1,13 +1,13 @@
 const webpack = require('webpack');
 const path = require('path');
-const ENTRY = './src/VisualMain.ts';
+const ENTRY = './src/VisualMain.tsx';
 const regex = path.normalize(ENTRY).replace(/\\/g, '\\\\').replace(/\./g, '\\.');
 
 module.exports = {
     entry: ENTRY,
     devtool: 'eval',
     resolve: {
-        extensions: ['', '.webpack.js', '.web.js', '.js', '.ts']
+        extensions: ['', '.webpack.js', '.web.js', '.js', '.ts', '.tsx']
     },
     module: {
         preLoaders: [
@@ -25,6 +25,14 @@ module.exports = {
                 test: /\.ts?$/,
                 loader: 'ts-loader',
             },
+            {
+                test: /\.tsx?$/,
+                loader: 'ts-loader',
+            },
+            {
+                test: /\.json$/,
+                loader: 'json'
+            }
         ]
     },
     externals: [
