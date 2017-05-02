@@ -20,7 +20,7 @@ import  VegaLite from 'react-vega-lite';
         "y": {"field": "b", "type": "quantitative"}
         } 
     };
-    const bardata = {
+    const bardata : IBarData = {
     "values": [
         {"a": "A","b": 80}, {"a": "B","b": 34}, {"a": "C","b": 55},
         {"a": "D","b": 19}, {"a": "E","b": 40}, {"a": "F","b": 34},
@@ -46,6 +46,54 @@ import  VegaLite from 'react-vega-lite';
       }
     }
   };
+
+interface IBarPoint {
+    a: string;
+    b: number;
+}
+interface IBarData {
+    values: IBarPoint[];
+    
+}
+
+    /**
+     * Function that converts queried data into a view model that will be used by the visual.
+     *
+     * @function
+     * @param {VisualUpdateOptions} options - Contains references to the size of the container
+     *                                        and the dataView which contains all the data
+     *                                        the visual had queried.
+     * @param {IVisualHost} host            - Contains references to the host which contains services
+     */
+    function visualTransform(options: VisualUpdateOptions, host: IVisualHost): IBarData {
+        let dataViews = options.dataViews;
+
+        if (!dataViews
+            || !dataViews[0]
+            || !dataViews[0].categorical
+            || !dataViews[0].categorical.categories
+            || !dataViews[0].categorical.categories[0].source
+            || !dataViews[0].categorical.values)
+            return bardata;
+
+        let categorical = dataViews[0].categorical;
+        let category = categorical.categories[0];
+        let dataValue = categorical.values[0];
+
+        let barChartDataPoints: IBarPoint[] = [];
+        let dataMax: number;
+
+        for (let i = 0, len = Math.max(category.values.length, dataValue.values.length); i < len; i++) {
+
+            let a : string  =  category.values[i] as string;
+            let b : number = dataValue.values[i] as number;
+
+            barChartDataPoints.push({ a:a, b:b });
+        }
+
+        return { values: barChartDataPoints };
+    }
+
 export default class VisualTemplate implements IVisual {
 
     private target: any;
@@ -68,9 +116,12 @@ export default class VisualTemplate implements IVisual {
     }
 
     public update(options: VisualUpdateOptions) {
-     //   debugger;
+      //  debugger;
+
+        let localBarData = visualTransform( options, this.host);
+
         console.log('Visual update', options);
-        ReactDOM.render(<VegaLite spec={spec} data={bardata} />, this.target[0]);
+        ReactDOM.render(<VegaLite spec={spec} data={localBarData} />, this.target[0]);
         // ReactDOM.render(<div> Testing React! </div>,this.target[0]);
         //this.target.html(`<h1> Steven Drucker </h1> <p class="update-count">Update count: <em>${(++this.updateCount)}</em><br />operationKind: <em>${options.operationKind}</em></p>`);
         console.log("testing sdrucker2")
