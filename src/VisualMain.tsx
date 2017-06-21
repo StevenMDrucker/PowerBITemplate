@@ -22,7 +22,7 @@ import  VegaLite from 'react-vega-lite';
     };
     const bardata : IBarData = {
     "values": [
-        {"a": "A","b": 80}, {"a": "B","b": 34}, {"a": "C","b": 55},
+        {"a": "A","b": 90}, {"a": "B","b": 34}, {"a": "C","b": 55},
         {"a": "D","b": 19}, {"a": "E","b": 40}, {"a": "F","b": 34},
         {"a": "G","b": 91}, {"a": "H","b": 78}, {"a": "I","b": 25}
         ] 
@@ -113,7 +113,7 @@ export default class VisualTemplate implements IVisual {
         this.host = options.host;
         this.selectionManager = options.host.createSelectionManager();
         this.hostServices = (this.selectionManager as any).hostServices; // `hostServices` is now what we used to call `host`
-    }
+    } 
 
     public update(options: VisualUpdateOptions) {
       //  debugger;
